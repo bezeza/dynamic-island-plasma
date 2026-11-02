@@ -994,10 +994,18 @@ def test_application_rules() -> None:
             catalog = apps.catalog()
             check(
                 "application catalogue contains only visible launchable apps",
-                len(catalog) == 1
-                and catalog[0]["id"] == "org.example.demo"
-                and catalog[0]["name"] == "Demo App"
-                and catalog[0]["icon"] == "demo",
+                len(catalog) == 2
+                and any(
+                    app["id"] == "org.example.demo"
+                    and app["name"] == "Demo App"
+                    and app["icon"] == "demo"
+                    for app in catalog
+                )
+                and any(
+                    app["id"] == "org.telegram.desktop"
+                    and app["name"] == "Telegram Desktop"
+                    for app in catalog
+                ),
                 str(catalog),
             )
             check(
