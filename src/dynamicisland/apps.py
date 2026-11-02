@@ -184,6 +184,7 @@ def catalog() -> list[dict[str, str]]:
         name = ""
         icon = ""
         hidden = False
+        entry_type = ""
         try:
             with open(record.path, "r", encoding="utf-8", errors="replace") as handle:
                 in_entry = False
@@ -197,7 +198,9 @@ def catalog() -> list[dict[str, str]]:
                     if not in_entry or "=" not in line:
                         continue
                     key, value = line.split("=", 1)
-                    if key == "Name" and not name:
+                    if key == "Type" and not entry_type:
+                        entry_type = value.strip()
+                    elif key == "Name" and not name:
                         name = value.strip()
                     elif key == "Icon" and not icon:
                         icon = value.strip()
@@ -205,7 +208,7 @@ def catalog() -> list[dict[str, str]]:
                         hidden = True
         except OSError:
             continue
-        if hidden:
+        if hidden or entry_type != "Application":
             continue
         result.append({"id": record.stem, "name": name or record.name or record.stem,
                        "icon": icon or "application-x-executable"})
