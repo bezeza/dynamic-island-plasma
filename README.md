@@ -176,8 +176,8 @@ happens, a release is a state that was tested as a whole. Four lines get you
 there:
 
 ```bash
-git clone https://github.com/teodorgross/Dynamic-Island-Plasma-Wayland.git
-cd Dynamic-Island-Plasma-Wayland
+git clone https://github.com/bezeza/dynamic-island-plasma.git
+cd dynamic-island-plasma
 git checkout "$(git tag --sort=-v:refname | head -n 1)"   # the newest release
 ./tools/install.sh
 ```
