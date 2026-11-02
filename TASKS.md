@@ -58,7 +58,7 @@ When an agent starts a task, add a row with its name/tool, task ID, branch, date
 
 | Agent / contributor | Task ID | Branch / PR | Scope | Started | Status |
 |---|---|---|---|---|---|
-| Maintainer + ChatGPT | DI-002 | `docs/ai-contributor-workflow` (this PR) | Contributor rules, task registry, issue/PR templates | 2026-11-02 | In progress |
+| Maintainer + ChatGPT | DI-002 | [PR #6](https://github.com/bezeza/dynamic-island-plasma/pull/6) — `docs/ai-contributor-workflow` | Contributor rules, task registry, issue/PR templates | 2026-11-02 | Review |
 
 ## How to add a task
 
