@@ -193,11 +193,19 @@ KCM.SimpleKCM {
                             }
                         }
                     }
-                    Item { Kirigami.FormData.isSection: true; Kirigami.FormData.label: i18n("Notifications") }
+                    QQC2.Label {
+                        visible: !!root.selectedApp
+                        text: i18n("Notifications")
+                        font: Kirigami.Theme.titleFont
+                    }
+                    QQC2.Label {
+                        visible: !!root.selectedApp
+                        text: i18n("Notification policy:")
+                        opacity: 0.8
+                    }
                     QQC2.ComboBox {
                         visible: !!root.selectedApp
                         Layout.fillWidth: true
-                        Kirigami.FormData.label: i18n("Notification policy:")
                         textRole: "label"
                         valueRole: "tag"
                         model: [
@@ -222,11 +230,19 @@ KCM.SimpleKCM {
                         font: Kirigami.Theme.smallFont
                         text: i18n("Critical notifications always pass through for safety. An explicit Allow can override Do Not Disturb and the legacy blacklist.")
                     }
-                    Item { Kirigami.FormData.isSection: true; Kirigami.FormData.label: i18n("Sound") }
+                    QQC2.Label {
+                        visible: !!root.selectedApp
+                        text: i18n("Sound")
+                        font: Kirigami.Theme.titleFont
+                    }
+                    QQC2.Label {
+                        visible: !!root.selectedApp
+                        text: i18n("Notification sound:")
+                        opacity: 0.8
+                    }
                     QQC2.ComboBox {
                         visible: !!root.selectedApp
                         Layout.fillWidth: true
-                        Kirigami.FormData.label: i18n("Notification sound:")
                         textRole: "label"
                         valueRole: "tag"
                         model: [
@@ -242,7 +258,11 @@ KCM.SimpleKCM {
                         }
                         onActivated: root.updateRule("sound", model[currentIndex].tag)
                     }
-                    Item { Kirigami.FormData.isSection: true; Kirigami.FormData.label: i18n("Display duration") }
+                    QQC2.Label {
+                        visible: !!root.selectedApp
+                        text: i18n("Display duration")
+                        font: Kirigami.Theme.titleFont
+                    }
                     QQC2.CheckBox {
                         visible: !!root.selectedApp
                         text: i18n("Use a custom duration for this application")
