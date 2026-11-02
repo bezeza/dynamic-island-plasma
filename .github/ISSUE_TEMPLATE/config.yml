@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Project documentation
+    url: https://github.com/bezeza/dynamic-island-plasma/blob/main/PROJECT_CONTEXT.md
+    about: Read the project vision, roadmap and contributor instructions before opening a request.
+  - name: AI contribution guide
+    url: https://github.com/bezeza/dynamic-island-plasma/blob/main/CONTRIBUTING_AI.md
+    about: Read the rules for human and AI contributors.

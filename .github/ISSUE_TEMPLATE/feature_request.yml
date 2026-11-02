@@ -1,0 +1,38 @@
+name: Feature request
+description: Propose a feature or improvement for Dynamic Island Plasma
+title: "[DI-NEW] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Read PROJECT_CONTEXT.md and CONTRIBUTING_AI.md before proposing implementation.
+        The maintainer will assign the permanent DI task ID.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / user need
+      description: What problem should this solve?
+      placeholder: As a KDE Plasma user, I want...
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Expected behaviour
+      description: Describe the desired result and acceptance criteria.
+    validations:
+      required: true
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Technical constraints / dependencies
+      description: Mention Plasma, Qt, Wayland, D-Bus, existing PRs or related components if known.
+    validations:
+      required: false
+  - type: textarea
+    id: testing
+    attributes:
+      label: How should it be tested?
+      validations:
+        required: false

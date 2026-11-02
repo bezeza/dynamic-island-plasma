@@ -1,0 +1,61 @@
+name: Bug report
+description: Report a reproducible problem
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Search existing issues first. Do not include private notification contents, tokens, or personal data in logs.
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+      description: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+      description: What should have happened?
+    validations:
+      required: true
+  - type: input
+    id: plasma
+    attributes:
+      label: KDE Plasma version
+      placeholder: "6.x"
+    validations:
+      required: true
+  - type: input
+    id: qt
+    attributes:
+      label: Qt version
+      placeholder: "6.x"
+    validations:
+      required: false
+  - type: dropdown
+    id: session
+    attributes:
+      label: Session
+      options:
+        - Wayland
+        - X11
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Give the shortest reproducible sequence.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Sanitized logs / screenshots
+      description: Remove notification bodies, personal data, tokens and private paths before posting.
+    validations:
+      required: false
