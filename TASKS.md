@@ -15,9 +15,9 @@ Repository: https://github.com/bezeza/dynamic-island-plasma
 
 ## Task ID allocation
 
-- **Next free ID: pending maintainer reconciliation.** Claude Code's review identified a conflict between an earlier proposed feature numbering and the first draft of this registry. Do not allocate new IDs until the maintainer confirms the canonical mapping.
+- **Next free ID: DI-013.** Canonical feature numbering was confirmed by the maintainer on 2026-11-02. IDs are reserved in this registry; check it before assigning the next one.
 - IDs are permanent and never reused. Cancelled tasks remain listed with status `Cancelled`.
-- New PR titles use `[DI-###]`; commit subjects use `DI-###: `. Existing PRs #1–#6 keep their existing names unless the maintainer explicitly requests a rename.
+- New PR titles use `[DI-###]`; commit subjects use `DI-###: `. Existing PRs #1–#5 keep their existing names because they predate the convention. PR #6 is the workflow task and uses `[DI-011]`.
 
 ## Status definitions
 
@@ -47,17 +47,18 @@ No PR above is represented as merged by this file. Re-check GitHub for current s
 
 | ID | Priority | Task | Status | Owner | Files / components likely touched | Dependency / next action |
 |---|---|---|---|---|---|---|
-| DI-001 | P0 | Review and stabilize existing PR stack (history, Telegram filter, system style, animation, app manager) | Review | Maintainer | `src/`, `applet/`, `tools/`, `.github/workflows/` | Inspect each PR diff and CI; preserve stack order; resolve failures before merge |
-| DI-002 | P0 | Establish contributor/AI workflow and task tracking | Review | Maintainer | `CONTRIBUTING_AI.md`, `TASKS.md`, `.github/ISSUE_TEMPLATE/`, `.github/pull_request_template.md` | This documentation PR; review and merge into main |
-| DI-003 | P1 | Complete per-application manager: presentation modes, priority, grouping, filters, bulk actions, manual app entry | Review | Maintainer | `src/dynamicisland/apps.py`, `controller.py`, `config.py`, `applet/.../ConfigApplications.qml`, tests | Builds on PR #5; validate existing implementation first; do not duplicate current allow/mute/block, sound, timeout work |
-| DI-004 | P1 | Per-application animation selection | Backlog | Unassigned | animation controller, `applet/.../ConfigApplications.qml`, animation settings | Depends on animation foundation PR #4 and app manager PR #5 |
-| DI-005 | P1 | Finish Animation Studio: live preview, reduced motion, edge-aware Slide, Fade/Zoom/Spring semantics | Review | Maintainer | presentation/animation code, QML settings, tests | PR #4; verify actual QML/runtime behaviour on Plasma Wayland |
-| DI-006 | P1 | Localization language selector and automatic language detection | Backlog | Unassigned | `applet/.../translate/`, locale/config handling, translation scripts | Audit current translation tooling/catalogues first |
+| DI-001 | P0 | Application Manager — per-app discovery, notification policies, sound and timeout overrides, searchable settings | Review | Maintainer | `src/dynamicisland/apps.py`, `controller.py`, `config.py`, `applet/.../ConfigApplications.qml`, tests | PR #5; validate current implementation, policy precedence, persistence and Fedora Plasma 6 Wayland behaviour |
+| DI-002 | P0 | Notification Animation Studio — global animation and appearance controls | Review | Maintainer | presentation/animation code, QML settings, tests | PR #4; validate real transitions, preview, reduced motion, edge-aware Slide and Plasma Wayland |
+| DI-003 | P1 | Per-App Animation — choose animation and presentation per application | Backlog | Unassigned | animation controller, `applet/.../ConfigApplications.qml`, animation settings | Depends on PR #4 and PR #5; avoid duplicate config keys and coordinate shared QML files |
+| DI-004 | P1 | Notification History — searchable history, filtering, retention and privacy | Review | Maintainer | history model/store, `applet/.../History*`, history settings | PR #1; validate storage, search, retention and privacy |
+| DI-005 | P1 | Language Manager — language selector and automatic language detection | Backlog | Unassigned | `applet/.../translate/`, locale/config handling, translation scripts | Audit current catalogs and translation tooling first |
+| DI-006 | P1 | Per-App Profiles — named profiles/presets for application notification behaviour | Backlog | Unassigned | `src/dynamicisland/config.py`, application rules, `ConfigApplications.qml`, import/export | Depends on DI-001; define profile schema and precedence before implementation |
 | DI-007 | P2 | Appearance / Liquid Glass Studio and compositor capability fallback | Backlog | Unassigned | presentation code, QML theme/components, capability detection | Depends on supported Plasma/Qt/Wayland rendering path |
-| DI-008 | P2 | Notification history UX: filters, retention, privacy, grouping | Review | Maintainer | history model/store, `applet/.../History*`, history settings | PR #1; check current implementation and tests |
-| DI-009 | P2 | Packaging, install/uninstall, rollback and emergency recovery | Backlog | Unassigned | `tools/install.sh`, `tools/uninstall.sh`, packaging metadata, docs | Fedora first; document restoring standard Plasma notification service |
-| DI-010 | P2 | Multi-monitor, HiDPI, accessibility, keyboard and reduced-motion audit | Backlog | Unassigned | QML surfaces, placement, focus/accessibility, tests | Test on real Plasma 6 Wayland session |
-| DI-011 | P2 | CI expansion: QML lint/compile, D-Bus protocol tests, config migration tests | Ready | Unassigned | `.github/workflows/check.yml`, `pyproject.toml`, tests | Extend existing workflow after checking available toolchain |
+| DI-008 | P2 | Packaging, install/uninstall, rollback and emergency recovery | Backlog | Unassigned | `tools/install.sh`, `tools/uninstall.sh`, packaging metadata, docs | Fedora first; document restoring standard Plasma notification service |
+| DI-009 | P2 | Multi-monitor, HiDPI, accessibility, keyboard and reduced-motion audit | Backlog | Unassigned | QML surfaces, placement, focus/accessibility, tests | Test on real Plasma 6 Wayland session |
+| DI-010 | P2 | CI expansion: QML lint/compile, D-Bus protocol tests, config migration tests | Ready | Unassigned | `.github/workflows/check.yml`, `pyproject.toml`, tests | Extend existing workflow after checking available toolchain |
+| DI-011 | P0 | Shared AI/human contributor workflow and task tracking | Review | Maintainer | `CONTRIBUTING_AI.md`, `TASKS.md`, `.github/ISSUE_TEMPLATE/`, `.github/pull_request_template.md`, README | PR #6; review and merge workflow docs into main |
+| DI-012 | P0 | Stabilize and integrate the existing stacked PR series | Ready | Maintainer | `src/`, `applet/`, `tools/`, `.github/workflows/` | Check PR dependency order; resolve CI, conflicts and runtime validation before merges |
 
 ## Agent assignment log
 
@@ -65,7 +66,7 @@ When an agent starts a task, add a row with its name/tool, task ID, branch, date
 
 | Agent / contributor | Task ID | Branch / PR | Scope | Started | Status |
 |---|---|---|---|---|---|
-| Maintainer + ChatGPT | DI-002 | [PR #6](https://github.com/bezeza/dynamic-island-plasma/pull/6) — `docs/ai-contributor-workflow` | Contributor rules, task registry, issue/PR templates | 2026-11-02 | Review |
+| Maintainer + ChatGPT | DI-011 | [PR #6](https://github.com/bezeza/dynamic-island-plasma/pull/6) — `docs/ai-contributor-workflow` | Contributor rules, task registry, issue/PR templates | 2026-11-02 | Review |
 
 ## How to add a task
 
