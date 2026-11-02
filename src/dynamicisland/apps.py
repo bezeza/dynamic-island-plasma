@@ -173,7 +173,7 @@ def application_id(desktop_entry: str = "", app_name: str = "") -> str:
     if candidate:
         return "desktop:" + candidate.casefold()
     if name:
-        return "app:" + wanted
+        return "app:" + name.casefold().strip()
     return ""
 
 
