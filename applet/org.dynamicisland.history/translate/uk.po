@@ -1,0 +1,130 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.dynamicisland.history\n"
+"Language: uk\n"
+"Language-Team: Ukrainian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+
+msgid "Animation"
+msgstr "Анімація"
+
+msgid "Entry and exit:"
+msgstr "Поява та зникнення:"
+
+msgid "Slide"
+msgstr "Виїзд"
+
+msgid "Fade"
+msgstr "Плавне згасання"
+
+msgid "Zoom"
+msgstr "Масштабування"
+
+msgid "Spring"
+msgstr "Пружина"
+
+msgid "Position:"
+msgstr "Розташування:"
+
+msgid "Top left"
+msgstr "Угорі ліворуч"
+
+msgid "Top centre"
+msgstr "Угорі по центру"
+
+msgid "Top right"
+msgstr "Угорі праворуч"
+
+msgid "Liquid Glass"
+msgstr "Рідке скло"
+
+msgid "Language"
+msgstr "Мова"
+
+msgid "Island speaks:"
+msgstr "Мова острова:"
+
+msgid "Follow the desktop"
+msgstr "Як у системі"
+
+msgid "Made of:"
+msgstr "Оформлення:"
+
+msgid "AMOLED black"
+msgstr "Чорний AMOLED"
+
+msgid "Dark"
+msgstr "Темна"
+
+msgid "Light"
+msgstr "Світла"
+
+msgid "Follow the colour scheme"
+msgstr "Як у кольоровій схемі"
+
+msgid "Search notifications"
+msgstr "Пошук сповіщень"
+
+msgid "All applications"
+msgstr "Усі програми"
+
+msgid "No matching notifications"
+msgstr "Сповіщень не знайдено"
+
+msgid "Remove notification"
+msgstr "Видалити сповіщення"
+
+msgid "Do not disturb:"
+msgstr "Не турбувати:"
+
+msgid "Quiet"
+msgstr "Тиша"
+
+msgid "Default:"
+msgstr "За замовчуванням:"
+
+msgid "Size"
+msgstr "Розмір"
+
+msgid "Colour"
+msgstr "Колір"
+
+msgid "Glow:"
+msgstr "Світіння:"
+
+msgid "Stack and history"
+msgstr "Стек та історія"
+
+msgid "Sources"
+msgstr "Джерела"
+
+msgid "Add"
+msgstr "Додати"
+
+msgid "Remove"
+msgstr "Видалити"
+
+msgid "Name"
+msgstr "Назва"
+
+msgid "Icon"
+msgstr "Значок"
+
+msgid "Address"
+msgstr "Адреса"
+
+msgid "Port"
+msgstr "Порт"
+
+msgid "Token"
+msgstr "Токен"
+
+msgid "Generate"
+msgstr "Згенерувати"
+
+msgid "Copy"
+msgstr "Копіювати"
+

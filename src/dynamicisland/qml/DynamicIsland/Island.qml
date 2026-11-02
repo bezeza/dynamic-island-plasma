@@ -62,14 +62,15 @@ Item {
 
     width: expanded && hasContent ? openWidth : compactWidth
     height: expanded && hasContent ? openHeight : compactHeight
-    scale: hasContent ? 1.0 : 0.92
+    scale: hasContent ? 1.0 : (Cfg.values.animationStyle === "zoom" ? 0.72 : (Cfg.values.animationStyle === "fade" ? 1.0 : 0.92))
     opacity: hasContent ? 1.0 : 0.0
 
     /* How far the pill sits above where it belongs. It arrives by sliding down
      * out of the screen edge and leaves the same way — but only after it has
      * collapsed back into its capsule, which is what the pause below is for. */
     readonly property real edgeShift: -(compactHeight + Cfg.values.topMargin + 24)
-    property real entryShift: hasContent ? 0 : edgeShift
+    property real entryShift: (Cfg.values.animationStyle === "slide" || Cfg.values.animationStyle === "spring")
+                               ? (hasContent ? 0 : edgeShift) : 0
     transform: Translate { y: root.entryShift }
 
     Behavior on entryShift {

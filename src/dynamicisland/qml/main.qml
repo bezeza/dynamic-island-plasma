@@ -47,7 +47,14 @@ Window {
 
     Island {
         id: island
-        anchors.horizontalCenter: parent.horizontalCenter
+        x: {
+            const margin = Cfg.values.sideMargin || 24
+            switch (Cfg.values.position || "top-center") {
+            case "top-left": return margin
+            case "top-right": return Math.max(margin, parent.width - width - margin)
+            default: return (parent.width - width) / 2
+            }
+        }
         y: Cfg.values.topMargin + dragOffset
     }
 }

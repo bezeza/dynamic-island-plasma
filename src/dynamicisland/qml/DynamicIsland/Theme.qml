@@ -23,7 +23,7 @@ import QtQuick
 QtObject {
     id: theme
 
-    /// One of "amoled", "dark", "light", "system".
+    /// One of "amoled", "dark", "light", "glass", "system".
     property string mode: "amoled"
 
     /// The desktop's own colours. On Plasma this is the active colour scheme.
@@ -39,6 +39,7 @@ QtObject {
         switch (mode) {
         case "light":  return "#FFFFFF"
         case "dark":   return "#1B1B1F"
+        case "glass":  return Qt.rgba(0.075, 0.085, 0.11, 0.78)
         case "system": return theme.desktop.window
         default:       return "#000000"
         }
@@ -51,6 +52,7 @@ QtObject {
         case "dark":   return "#26262B"
         // Eight per cent of the type colour over the body: the same step the
         // fixed palettes make, whichever way round the scheme runs.
+        case "glass":  return Qt.rgba(0.18, 0.20, 0.25, 0.82)
         case "system": return Qt.tint(theme.desktop.window,
                                       theme.alpha(theme.desktop.windowText, 0.08))
         default:       return "#141417"
@@ -61,6 +63,7 @@ QtObject {
         switch (mode) {
         case "light":  return "#E0E0E5"
         case "dark":   return "#313138"
+        case "glass":  return Qt.rgba(0.25, 0.28, 0.34, 0.88)
         case "system": return Qt.tint(theme.desktop.window,
                                       theme.alpha(theme.desktop.windowText, 0.16))
         default:       return "#1F1F24"
@@ -71,6 +74,7 @@ QtObject {
         switch (mode) {
         case "light":  return "#1A1A1E"
         case "dark":   return "#FFFFFF"
+        case "glass":  return "#FFFFFF"
         case "system": return theme.desktop.windowText
         default:       return "#FFFFFF"
         }
@@ -81,6 +85,7 @@ QtObject {
         switch (mode) {
         case "light":  return "#5A5A63"
         case "dark":   return "#A8A8B0"
+        case "glass":  return "#C8CDD8"
         case "system": return Qt.tint(theme.desktop.window,
                                       theme.alpha(theme.desktop.windowText, 0.65))
         default:       return "#98989F"
@@ -92,6 +97,7 @@ QtObject {
         switch (mode) {
         case "light":  return "#8E8E97"
         case "dark":   return "#6A6A72"
+        case "glass":  return "#969EAE"
         case "system": return Qt.tint(theme.desktop.window,
                                       theme.alpha(theme.desktop.windowText, 0.42))
         default:       return "#5A5A61"
