@@ -91,8 +91,10 @@ KCM.SimpleKCM {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     padding: 1
-                    contentItem: ListView {
-                        id: applicationList
+                    contentItem: Item {
+                        ListView {
+                            id: applicationList
+                            anchors.fill: parent
                         clip: true
                         model: island.applications.filter(function(app) {
                             return !root.searchText
@@ -133,6 +135,8 @@ KCM.SimpleKCM {
                                     color: Kirigami.Theme.highlightColor
                                 }
                             }
+                        }
+
                         }
                         QQC2.Label {
                             anchors.centerIn: parent
