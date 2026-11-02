@@ -33,6 +33,58 @@ KCM.SimpleKCM {
             text: i18n("The island is not running. Changes here are handed to it, so they would go nowhere: systemctl --user start dynamic-island")
         }
 
+        // -- animation -----------------------------------------------------
+        Item { Kirigami.FormData.isSection: true; Kirigami.FormData.label: i18n("Animation") }
+
+        QQC2.ComboBox {
+            id: animationBox
+            Kirigami.FormData.label: i18n("Entry and exit:")
+            textRole: "label"
+            valueRole: "tag"
+            model: [
+                { tag: "slide", label: i18n("Slide") },
+                { tag: "fade", label: i18n("Fade") },
+                { tag: "zoom", label: i18n("Zoom") },
+                { tag: "spring", label: i18n("Spring") }
+            ]
+            property bool ready: false
+            Component.onCompleted: ready = true
+            currentIndex: {
+                const wanted = island.value("animationStyle", "slide")
+                for (let index = 0; index < model.length; ++index)
+                    if (model[index].tag === wanted) return index
+                return 0
+            }
+            onActivated: {
+                if (island.ready && animationBox.ready)
+                    island.set("animationStyle", model[currentIndex].tag)
+            }
+        }
+
+        QQC2.ComboBox {
+            id: positionBox
+            Kirigami.FormData.label: i18n("Position:")
+            textRole: "label"
+            valueRole: "tag"
+            model: [
+                { tag: "top-left", label: i18n("Top left") },
+                { tag: "top-center", label: i18n("Top centre") },
+                { tag: "top-right", label: i18n("Top right") }
+            ]
+            property bool ready: false
+            Component.onCompleted: ready = true
+            currentIndex: {
+                const wanted = island.value("position", "top-center")
+                for (let index = 0; index < model.length; ++index)
+                    if (model[index].tag === wanted) return index
+                return 1
+            }
+            onActivated: {
+                if (island.ready && positionBox.ready)
+                    island.set("position", model[currentIndex].tag)
+            }
+        }
+
         // -- quiet --------------------------------------------------------
         Item { Kirigami.FormData.isSection: true; Kirigami.FormData.label: i18n("Quiet") }
 
@@ -208,6 +260,7 @@ KCM.SimpleKCM {
                 { tag: "amoled", label: i18n("AMOLED black") },
                 { tag: "dark", label: i18n("Dark") },
                 { tag: "light", label: i18n("Light") },
+                { tag: "glass", label: i18n("Liquid Glass") },
                 { tag: "system", label: i18n("Follow the colour scheme") }
             ]
 
@@ -232,7 +285,7 @@ KCM.SimpleKCM {
         QQC2.Label {
             Layout.maximumWidth: Kirigami.Units.gridUnit * 22
             wrapMode: Text.WordWrap
-            text: i18n("AMOLED is true black, so on an OLED panel those pixels are off. Dark is a grey body for panels where black smears; Light is dark type on white; the last one takes the desktop's own colours.")
+            text: i18n("AMOLED is true black; Dark is a grey body; Light is dark type on white; Liquid Glass uses a translucent surface; System follows the desktop colours.")
             opacity: 0.7
             font: Kirigami.Theme.smallFont
         }
@@ -303,6 +356,7 @@ KCM.SimpleKCM {
             model: [
                 { tag: "auto", label: i18n("Follow the desktop") },
                 { tag: "en", label: "English" },
+                { tag: "uk", label: "Українська" },
                 { tag: "de", label: "Deutsch" },
                 { tag: "ru", label: "Русский" },
                 { tag: "zh", label: "简体中文" },

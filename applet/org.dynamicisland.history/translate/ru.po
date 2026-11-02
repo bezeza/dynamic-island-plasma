@@ -360,19 +360,52 @@ msgid "Telegram smart filter"
 msgstr "Telegram-Smartfilter"
 
 msgid "Enable smart filtering for Telegram"
-msgstr "Intelligente Filterung für Telegram aktivieren"
+msgstr "Включить интеллектуальную фильтрацию Telegram"
 
 msgid "Merge repeated Telegram notifications"
-msgstr "Wiederholte Telegram-Benachrichtigungen zusammenfassen"
+msgstr "Объединять повторяющиеся уведомления Telegram"
 
 msgid "Duplicate window:"
 msgstr "Zeitfenster für Duplikate:"
 
 msgid "Hide keywords:"
-msgstr "Auszublendende Schlüsselwörter:"
+msgstr "Скрывать по ключевым словам:"
 
 msgid "Protect keywords:"
 msgstr "Защищённые ключевые слова:"
 
 msgid "Protected keywords bypass Telegram keyword filtering and duplicate merging. Critical notifications always pass; global Do Not Disturb and the application blacklist still apply."
 msgstr "Защищённые слова обходят фильтрацию по ключевым словам и объединение повторов Telegram. Критические уведомления всегда проходят; общий режим «Не беспокоить» и чёрный список приложений продолжают действовать."
+
+msgid "Animation"
+msgstr "Анимация"
+
+msgid "Entry and exit:"
+msgstr "Появление и исчезновение:"
+
+msgid "Slide"
+msgstr "Скольжение"
+
+msgid "Fade"
+msgstr "Плавное проявление"
+
+msgid "Zoom"
+msgstr "Масштабирование"
+
+msgid "Spring"
+msgstr "Пружина"
+
+msgid "Position:"
+msgstr "Расположение:"
+
+msgid "Top left"
+msgstr "Сверху слева"
+
+msgid "Top centre"
+msgstr "Сверху по центру"
+
+msgid "Top right"
+msgstr "Сверху справа"
+
+msgid "Liquid Glass"
+msgstr "Жидкое стекло"

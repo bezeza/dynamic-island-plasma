@@ -390,3 +390,36 @@ msgstr ""
 
 msgid "Protected keywords bypass Telegram keyword filtering and duplicate merging. Critical notifications always pass; global Do Not Disturb and the application blacklist still apply."
 msgstr ""
+
+msgid "Animation"
+msgstr ""
+
+msgid "Entry and exit:"
+msgstr ""
+
+msgid "Slide"
+msgstr ""
+
+msgid "Fade"
+msgstr ""
+
+msgid "Zoom"
+msgstr ""
+
+msgid "Spring"
+msgstr ""
+
+msgid "Position:"
+msgstr ""
+
+msgid "Top left"
+msgstr ""
+
+msgid "Top centre"
+msgstr ""
+
+msgid "Top right"
+msgstr ""
+
+msgid "Liquid Glass"
+msgstr ""

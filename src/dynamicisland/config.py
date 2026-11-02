@@ -37,6 +37,10 @@ DEFAULTS: dict[str, Any] = {
     "screen": "active",
 
     # --- geometry ------------------------------------------------------
+    "position": "top-center",  # top-left, top-center, top-right
+    "sideMargin": 24,
+    # --- animation -----------------------------------------------------
+    "animationStyle": "slide",  # slide, fade, zoom, spring
     "compactHeight": 40,
     "compactMinWidth": 160,
     "compactMaxWidth": 480,
