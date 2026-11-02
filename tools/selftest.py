@@ -1173,7 +1173,7 @@ def test_critical_stack_retention() -> None:
     probe._trim_stack()
     remaining = probe._model.ids()
     check("critical notifications survive stack trimming", 1 in remaining and 4 in remaining, str(remaining))
-    check("old ordinary notifications are trimmed", 2 in probe.closed and 3 in probe.closed, str(probe.closed))
+    check("ordinary cards are trimmed to keep critical cards visible", {2, 3, 5}.issubset(set(probe.closed)), str(probe.closed))
 
 
 def test_telegram_filter() -> None:

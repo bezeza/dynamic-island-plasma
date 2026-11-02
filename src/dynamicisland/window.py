@@ -57,8 +57,8 @@ class WindowTools(QObject):
         # Keep ordinary debug logs readable; opt in only when diagnosing input
         # region problems specifically.
         if os.environ.get("DYNAMIC_ISLAND_TRACE_MASKS", "").lower() in ("1", "true", "yes", "on"):
-            debug(
-                f"mask={rect.x()},{rect.y()} {rect.width()}x{rect.height()} "
+            print(
+                f"[dynamic-island] mask={rect.x()},{rect.y()} {rect.width()}x{rect.height()} "
                 f"window={self._window.width()}x{self._window.height()} "
                 f"dpr={self._window.devicePixelRatio()}"
             )
