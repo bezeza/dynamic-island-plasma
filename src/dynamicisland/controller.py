@@ -146,6 +146,7 @@ class IslandController(QObject):
         )
 
         service.notify_handler = self._on_notify
+        service.applications_handler = apps.catalog
         service.close_handler = self._on_close_requested
         service.clear_history_handler = self._history.clear
         service.remove_history_handler = self._history.remove
@@ -617,7 +618,19 @@ class IslandController(QObject):
         self._trim_stack()
         self._arm(notification)
 
-        if not is_replacement and self._config.get("soundEnabled"):
+        _app_id, app_rule = self._application_rule(
+            desktop_entry, notification.app_name
+        )
+        notification_policy = str(app_rule.get("notifications", "inherit"))
+        sound_policy = str(app_rule.get("sound", "inherit"))
+        sound_allowed = (
+            notification_policy != "mute"
+            and (
+                sound_policy == "on"
+                or (sound_policy != "off" and bool(self._config.get("soundEnabled")))
+            )
+        )
+        if not is_replacement and sound_allowed:
             sound.play_for(hints, str(self._config.get("defaultSound") or ""))
 
     def _on_close_requested(self, notification_id: int) -> None:
@@ -642,14 +655,25 @@ class IslandController(QObject):
             countdown.stop()
 
     def _duration_for(self, notification: Notification) -> int:
-        if notification.timeout > 0:
-            return notification.timeout
-        if notification.timeout == 0:
-            return 0  # the sender asked us to keep it until dismissed
         if notification.urgency == URGENCY_CRITICAL and self._config.get(
             "criticalNeverExpires"
         ):
             return 0
+        if notification.timeout == 0:
+            return 0  # the sender explicitly asked us to keep it until dismissed
+
+        _app_id, rule = self._application_rule(
+            notification.desktop_entry, notification.app_name
+        )
+        try:
+            custom_timeout = int(rule.get("timeout", 0))
+        except (TypeError, ValueError):
+            custom_timeout = 0
+        if 1000 <= custom_timeout <= 60000:
+            return custom_timeout
+        if notification.timeout > 0:
+            return notification.timeout
+
         key = "lowUrgencyTimeout" if notification.urgency == URGENCY_LOW else "defaultTimeout"
         return int(self._config.get(key))
 
@@ -684,22 +708,46 @@ class IslandController(QObject):
             self._close(notification_id, CLOSED_EXPIRED)
 
     # -- filtering ------------------------------------------------------
+    def _application_rule(self, desktop_entry: str, app_name: str) -> tuple[str, dict[str, Any]]:
+        """Resolve the sender to a stable desktop ID and return its overrides."""
+        key = apps.application_id(desktop_entry, app_name)
+        rules = self._config.get("applicationRules")
+        if not isinstance(rules, dict):
+            return key, {}
+        rule = rules.get(key, {})
+        return key, rule if isinstance(rule, dict) else {}
+
     def _suppression_reason(
         self, app_name: str, hints: dict[str, Any], urgency: int
     ) -> str:
         """Why this notification is not shown — empty string means it is."""
         if urgency == URGENCY_CRITICAL:
             return ""  # critical always gets through
-        if self._config.get("doNotDisturb"):
-            return "do not disturb is on"
+
+        desktop_entry = str(hints.get("desktop-entry", "") or "")
+        display_name = str(hints.get("x-kde-display-appname", "") or app_name)
+        app_id, rule = self._application_rule(desktop_entry, display_name)
+        policy = str(rule.get("notifications", "inherit"))
+        if policy not in ("inherit", "allow", "mute", "block"):
+            policy = "inherit"
+
         if self._service.inhibited:
             return "another application is holding a notification inhibition"
-        blacklist = {str(entry).lower() for entry in self._config.get("blacklist") or []}
+        if policy == "block":
+            return f"blocked by application rule ({app_id or display_name})"
+        # An explicit per-app Allow is the user's exception to DND and to the
+        # legacy blacklist. It never bypasses another app's D-Bus inhibition.
+        if self._config.get("doNotDisturb") and policy != "allow":
+            return "do not disturb is on"
+
+        blacklist = {str(entry).casefold() for entry in self._config.get("blacklist") or []}
         candidates = {
-            app_name.lower(),
-            str(hints.get("desktop-entry", "")).lower(),
+            app_name.casefold(),
+            display_name.casefold(),
+            desktop_entry.casefold(),
+            app_id.casefold(),
         }
-        if blacklist & candidates:
+        if policy != "allow" and blacklist & candidates:
             return "the sender is on the blacklist"
         return ""
 

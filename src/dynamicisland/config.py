@@ -130,6 +130,9 @@ DEFAULTS: dict[str, Any] = {
     # --- filtering -----------------------------------------------------
     # desktop-entry / app-name values that are never shown.
     "blacklist": [],
+    # Per-app overrides keyed by desktop-entry ID or namespaced fallback.
+    # notifications=inherit|allow|mute|block; sound=inherit|on|off; timeout=ms.
+    "applicationRules": {},
     "doNotDisturb": False,
     # Telegram-only smart filtering is opt-in to preserve existing behaviour.
     "telegramSmartFilter": False,

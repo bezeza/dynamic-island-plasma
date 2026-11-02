@@ -128,3 +128,79 @@ msgstr "Згенерувати"
 msgid "Copy"
 msgstr "Копіювати"
 
+
+msgid "Applications"
+msgstr "Програми"
+
+msgid "Dynamic Island is not running. Start it with: systemctl --user start dynamic-island"
+msgstr "Dynamic Island не запущено. Запустіть: systemctl --user start dynamic-island"
+
+msgid "Choose an application to set its notification, sound and display rules. Unchanged settings inherit the global defaults."
+msgstr "Виберіть програму, щоб налаштувати її сповіщення, звук і відображення. Незмінені параметри успадковують глобальні налаштування."
+
+msgid "Search applications…"
+msgstr "Пошук програм…"
+
+msgid "No applications found"
+msgstr "Програм не знайдено"
+
+msgid "Refresh application list"
+msgstr "Оновити список програм"
+
+msgid "Select an application from the list."
+msgstr "Виберіть програму зі списку."
+
+msgid "No desktop applications were found. Check that desktop entries are installed."
+msgstr "Програм робочого столу не знайдено. Перевірте наявність desktop-файлів."
+
+msgid "Notifications"
+msgstr "Сповіщення"
+
+msgid "Notification policy:"
+msgstr "Правила сповіщень:"
+
+msgid "Use global setting"
+msgstr "Використовувати глобальне налаштування"
+
+msgid "Always allow"
+msgstr "Завжди дозволяти"
+
+msgid "Show silently"
+msgstr "Показувати без звуку"
+
+msgid "Block notifications"
+msgstr "Блокувати сповіщення"
+
+msgid "Critical notifications always pass through for safety. An explicit Allow can override Do Not Disturb and the legacy blacklist."
+msgstr "Критичні сповіщення завжди проходять з міркувань безпеки. Явний дозвіл може обходити режим «Не турбувати» та старий чорний список."
+
+msgid "Sound"
+msgstr "Звук"
+
+msgid "Notification sound:"
+msgstr "Звук сповіщень:"
+
+msgid "On"
+msgstr "Увімкнено"
+
+msgid "Off"
+msgstr "Вимкнено"
+
+msgid "Display duration"
+msgstr "Тривалість показу"
+
+msgid "Use a custom duration for this application"
+msgstr "Встановити окрему тривалість для цієї програми"
+
+msgid "Reset to global defaults"
+msgstr "Скинути до глобальних налаштувань"
+
+msgid "Reset application settings?"
+msgstr "Скинути налаштування програми?"
+
+msgid "All custom rules for this application will be removed."
+msgstr "Усі індивідуальні правила цієї програми буде видалено."
+
+msgid "Installed applications: %1"
+msgstr "Встановлено програм: %1"
+
