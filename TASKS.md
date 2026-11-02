@@ -59,7 +59,7 @@ No PR above is represented as merged by this file. Re-check GitHub for current s
 | DI-009 | P2 | Multi-monitor, HiDPI, accessibility, keyboard and reduced-motion audit | Backlog | Unassigned | QML surfaces, placement, focus/accessibility, tests | Test on real Plasma 6 Wayland session |
 | DI-010 | P2 | CI expansion: QML lint/compile, D-Bus protocol tests, config migration tests | Ready | Unassigned | `.github/workflows/check.yml`, `pyproject.toml`, tests | Extend existing workflow after checking available toolchain |
 | DI-011 | P0 | Shared AI/human contributor workflow and task tracking | Done | Maintainer | `CONTRIBUTING_AI.md`, `TASKS.md`, `.github/ISSUE_TEMPLATE/`, `.github/pull_request_template.md`, README | PR #6; review and merge workflow docs into main |
-| DI-012 | P0 | Stabilize and integrate the existing stacked PR series | Ready | Maintainer | `src/`, `applet/`, `tools/`, `.github/workflows/` | Check PR dependency order; resolve CI, conflicts and runtime validation before merges |
+| DI-012 | P0 | Stabilize and integrate the existing stacked PR series and keep follow-up work tracked | Review | Maintainer | `src/`, `applet/`, `tools/`, `.github/workflows/`, `TASKS.md` | PR #8 tracks the stabilization plan; PR #7 contains code fixes stacked on PR #5. Resolve CI, conflicts and Fedora runtime validation before merges |
 | DI-013 | P0 | Fix desktop-entry identity matching (Telegram) | In progress | ChatGPT | `src/dynamicisland/apps.py`, `tools/selftest.py` | PR #7; verify org.telegram.desktop maps to its exact installed desktop-entry ID and app rules apply |
 | DI-014 | P0 | Complete Ukrainian and Russian applet catalogues | In progress | ChatGPT | `applet/.../translate/template.pot`, `uk.po`, `ru.po` | PR #7; run translation check/build and review plural forms |
 | DI-015 | P0 | Repair offline fixtures and add regression coverage | In progress | ChatGPT | `tools/selftest.py` | PR #7; run offline self-tests on Python 3.12 and 3.14 |
@@ -77,6 +77,7 @@ When an agent starts a task, add a row with its name/tool, task ID, branch, date
 | Agent / contributor | Task ID | Branch / PR | Scope | Started | Status |
 |---|---|---|---|---|---|
 | Maintainer + ChatGPT | DI-011 | [PR #6](https://github.com/bezeza/dynamic-island-plasma/pull/6) — `docs/ai-contributor-workflow` | Contributor rules, task registry, issue/PR templates | 2026-11-02 | Done |
+| ChatGPT | DI-012 | [PR #8](https://github.com/bezeza/dynamic-island-plasma/pull/8) — `docs/DI-013-021-task-registry` | Update task registry and track follow-up fixes | 2026-11-02 | Review |
 | ChatGPT | DI-013–DI-021 | [PR #7](https://github.com/bezeza/dynamic-island-plasma/pull/7) — `fix/DI-013-019-stabilization` | Telegram identity, translations, test fixtures, Spring, config validation, critical stack, logging, Python 3.14 CI and README fork URL | 2026-11-02 | In progress |
 
 ## How to add a task
