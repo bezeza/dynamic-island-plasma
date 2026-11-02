@@ -485,3 +485,5 @@ msgstr "Все индивидуальные правила этого прило
 msgid "Installed applications: %1"
 msgstr "Установлено приложений: %1"
 
+msgid "AMOLED is true black; Dark is a grey body; Light is dark type on white; Liquid Glass uses a translucent surface; System follows the desktop colours."
+msgstr "AMOLED использует настоящий чёрный; Тёмная тема имеет серый фон; Светлая — тёмный текст на белом; Liquid Glass использует полупрозрачную поверхность; Системная тема следует цветам рабочего стола."

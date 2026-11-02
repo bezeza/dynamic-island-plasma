@@ -204,3 +204,287 @@ msgstr "Усі індивідуальні правила цієї програм
 msgid "Installed applications: %1"
 msgstr "Встановлено програм: %1"
 
+msgid "%1 notification in the history"
+msgid_plural "%1 notifications in the history"
+msgstr[0] "%1 сповіщення в історії"
+msgstr[1] "%1 сповіщення в історії"
+msgstr[2] "%1 сповіщень в історії"
+
+msgid "Nothing in the history"
+msgstr "В історії поки немає сповіщень"
+
+msgid "History"
+msgstr "Історія"
+
+msgid "Clear history"
+msgstr "Очистити історію"
+
+msgid "Notifications stay here after the island has taken them away."
+msgstr "Сповіщення залишаються тут після того, як острів їх приховав."
+
+msgid "just now"
+msgstr "щойно"
+
+msgid "%1 minute ago"
+msgid_plural "%1 minutes ago"
+msgstr[0] "%1 хвилину тому"
+msgstr[1] "%1 хвилини тому"
+msgstr[2] "%1 хвилин тому"
+
+msgid "Icon:"
+msgstr "Піктограма:"
+
+msgid "Icon name or path"
+msgstr "Назва піктограми або шлях"
+
+msgid "Choose…"
+msgstr "Вибрати…"
+
+msgid "A name from the icon theme (notifications, for example) or the path to an image file."
+msgstr "Назва з теми піктограм (наприклад, notifications) або шлях до файлу зображення."
+
+msgid "History:"
+msgstr "Історія:"
+
+msgid "Mark the icon while there is something in the history"
+msgstr "Позначати піктограму, коли в історії є записи"
+
+msgid "General"
+msgstr "Загальні"
+
+msgid "The island is not running. Changes here are handed to it, so they would go nowhere: systemctl --user start dynamic-island"
+msgstr "Острів не запущено. Зміни передаються йому, тому зараз не застосуються. Запустіть: systemctl --user start dynamic-island"
+
+msgid "Drop everything but critical notifications"
+msgstr "Відкидати всі сповіщення, крім критичних"
+
+msgid "Stop the countdown while the pointer is on the island"
+msgstr "Зупиняти таймер, коли вказівник над островом"
+
+msgid "Critical notifications stay until dismissed"
+msgstr "Критичні сповіщення залишаються, доки їх не закриють"
+
+msgid "How long a card stays"
+msgstr "Тривалість показу картки"
+
+msgid " ms"
+msgstr " мс"
+
+msgid "Low urgency:"
+msgstr "Низький рівень важливості:"
+
+msgid "Volume and brightness:"
+msgstr "Гучність і яскравість:"
+
+msgid "Now playing:"
+msgstr "Зараз відтворюється:"
+
+msgid "What the island takes over"
+msgstr "Що перебирає на себе острів"
+
+msgid "Show:"
+msgstr "Показувати:"
+
+msgid "File operations, with pause and cancel"
+msgstr "Файлові операції з можливістю призупинення та скасування"
+
+msgid "Volume, brightness and the other on-screen displays"
+msgstr "Гучність, яскравість та інші екранні індикатори"
+
+msgid "The track that starts playing, with its buttons"
+msgstr "Трек, який починає відтворюватися, з кнопками керування"
+
+msgid "Play the sounds applications ask for"
+msgstr "Відтворювати звуки, які запитують програми"
+
+msgid "Cards behind the front one:"
+msgstr "Карток позаду передньої:"
+
+msgid "Kept in the history:"
+msgstr "Зберігати в історії:"
+
+msgid "Where it sits"
+msgstr "Розташування"
+
+msgid " px"
+msgstr " пікс."
+
+msgid "Distance from the top edge:"
+msgstr "Відстань від верхнього краю:"
+
+msgid "0 keeps it flush with the bezel, which is where it belongs."
+msgstr "0 притискає острів до краю екрана — саме так і задумано."
+
+msgid "Screen:"
+msgstr "Екран:"
+
+msgid "\"active\" follows the pointer, otherwise a connector name such as DP-1."
+msgstr "«active» відповідає екрану під вказівником; інакше вкажіть назву роз’єму, наприклад DP-1."
+
+msgid "Width when open:"
+msgstr "Ширина у розгорнутому стані:"
+
+msgid "Tallest a card may get:"
+msgstr "Максимальна висота картки:"
+
+msgid "Corner radius:"
+msgstr "Радіус кутів:"
+
+msgid "Height of the capsule:"
+msgstr "Висота капсули:"
+
+msgid "Take the colour from the application icon"
+msgstr "Брати колір із піктограми програми"
+
+msgid "Fallback colour:"
+msgstr "Резервний колір:"
+
+msgid "Strength:"
+msgstr "Інтенсивність:"
+
+msgid "Hairline border:"
+msgstr "Тонка рамка:"
+
+msgid "Never shown"
+msgstr "Ніколи не показувати"
+
+msgid "Applications:"
+msgstr "Програми:"
+
+msgid "One per line — the name it sends, or its desktop entry."
+msgstr "По одному на рядок — назва, яку надсилає програма, або її desktop-entry."
+
+msgid "New feed"
+msgstr "Нова стрічка"
+
+msgid "New endpoint"
+msgstr "Нова кінцева точка"
+
+msgid "Webhook"
+msgstr "Вебхук"
+
+msgid "The island is not running. A source added here is handed to it, so it would go nowhere: systemctl --user start dynamic-island"
+msgstr "Острів не запущено. Додане тут джерело буде передано йому, але не працюватиме. Запустіть: systemctl --user start dynamic-island"
+
+msgid "RSS or Atom feed"
+msgstr "Стрічка RSS або Atom"
+
+msgid "JSON endpoint"
+msgstr "Кінцева точка JSON"
+
+msgid "Nothing selected. Add a feed, a JSON endpoint, or a webhook other machines can send notifications to."
+msgstr "Нічого не вибрано. Додайте стрічку, кінцеву точку JSON або вебхук, через який інші пристрої зможуть надсилати сповіщення."
+
+msgid "Shown as"
+msgstr "Відображати як"
+
+msgid "the name above"
+msgstr "назву вище"
+
+msgid "theme name or path"
+msgstr "назва теми або шлях"
+
+msgid "Checked every"
+msgstr "Перевіряти кожні"
+
+msgid " s"
+msgstr " с"
+
+msgid "At most per round"
+msgstr "Максимум за один цикл"
+
+msgid "Announce what is already there"
+msgstr "Повідомляти про вже наявні записи"
+
+msgid "Off keeps the first round quiet, so a restart does not replay old entries."
+msgstr "Якщо вимкнено, перший цикл буде тихим і після перезапуску старі записи не повторюватимуться."
+
+msgid "Only headlines matching"
+msgstr "Лише заголовки, що відповідають"
+
+msgid "a regular expression, empty for all"
+msgstr "регулярному виразу; залиште порожнім, щоб показувати всі"
+
+msgid "Where the list is in the answer"
+msgstr "Де у відповіді міститься список"
+
+msgid "Fields"
+msgstr "Поля"
+
+msgid "island field: path in the answer — one per line"
+msgstr "поле острова: шлях у відповіді — по одному на рядок"
+
+msgid "Request headers"
+msgstr "Заголовки запиту"
+
+msgid "header: value — one per line"
+msgstr "заголовок: значення — по одному на рядок"
+
+msgid "Listens on"
+msgstr "Прослуховувати адресу"
+
+msgid "127.0.0.1 is this machine only. 0.0.0.0 opens it to the network, and the island then refuses to start without a token."
+msgstr "127.0.0.1 доступний лише на цьому комп’ютері. 0.0.0.0 відкриває доступ із мережі, і тоді острів не запуститься без токена."
+
+msgid "empty means no authorisation"
+msgstr "порожнє значення означає відсутність авторизації"
+
+msgid "The token is kept in config.json, which is written for you alone (mode 600). To keep it out of the file entirely, set \"tokenFile\" or \"tokenEnv\" there instead — see the README."
+msgstr "Токен зберігається в config.json, доступному лише вам (права 600). Щоб узагалі не зберігати його у файлі, задайте там «tokenFile» або «tokenEnv» — див. README."
+
+msgid "Buttons may run commands"
+msgstr "Кнопки можуть виконувати команди"
+
+msgid "Off is the safe setting: whoever can reach this port could otherwise run anything as you."
+msgstr "Безпечніше залишити вимкненим: інакше кожен, хто має доступ до цього порту, зможе запускати команди від вашого імені."
+
+msgid "Anything that can fetch a URL can put a card up:"
+msgstr "Будь-який пристрій, що може звернутися до URL, здатен показати картку:"
+
+msgid "<this-machine>"
+msgstr "<цей-комп’ютер>"
+
+msgid "The last part of the path is what the card says it came from — /notify/backup, /notify/doorbell, one per service. POST with a JSON body works the same way; GET / on the port prints the whole format."
+msgstr "Остання частина шляху вказує, звідки надійшла картка: /notify/backup, /notify/doorbell — окремий шлях для кожної служби. POST із JSON-тілом працює так само; GET / на цьому порту показує повний формат."
+
+msgid "Panel icon"
+msgstr "Піктограма панелі"
+
+msgid "Island"
+msgstr "Острів"
+
+msgid "This is for the island's own words — the reply field, the volume label, the buttons on a file operation. These settings pages belong to the panel widget and follow the desktop language instead (System Settings → Region & Language)."
+msgstr "Це мова власних написів острова — поля відповіді, підпису гучності та кнопок файлових операцій. Сторінки цих налаштувань належать віджету панелі й натомість використовують мову робочого столу (Параметри системи → Регіон і мова)."
+
+msgid "AMOLED is true black, so on an OLED panel those pixels are off. Dark is a grey body for panels where black smears; Light is dark type on white; the last one takes the desktop's own colours."
+msgstr "AMOLED використовує справжній чорний колір, тому на OLED-панелі ці пікселі вимкнені. Темна тема має сірий фон для екранів, де чорний виглядає розмитим; Світла — темний текст на білому; останній варіант використовує кольори робочого столу."
+
+msgid "…but not while the player's own window has the focus"
+msgstr "…але не тоді, коли активне власне вікно програвача"
+
+msgid "Try a different search or application filter."
+msgstr "Спробуйте інший пошуковий запит або фільтр програм."
+
+msgid "Telegram smart filter"
+msgstr "Розумний фільтр Telegram"
+
+msgid "Enable smart filtering for Telegram"
+msgstr "Увімкнути розумну фільтрацію Telegram"
+
+msgid "Merge repeated Telegram notifications"
+msgstr "Об’єднувати повторні сповіщення Telegram"
+
+msgid "Duplicate window:"
+msgstr "Інтервал пошуку дублікатів:"
+
+msgid "Hide keywords:"
+msgstr "Ключові слова для приховування:"
+
+msgid "Protect keywords:"
+msgstr "Захищені ключові слова:"
+
+msgid "Protected keywords bypass Telegram keyword filtering and duplicate merging. Critical notifications always pass; global Do Not Disturb and the application blacklist still apply."
+msgstr "Захищені ключові слова обходять фільтрацію Telegram за ключовими словами та об’єднання дублікатів. Критичні сповіщення завжди проходять; глобальний режим «Не турбувати» та чорний список програм продовжують діяти."
+
+msgid "AMOLED is true black; Dark is a grey body; Light is dark type on white; Liquid Glass uses a translucent surface; System follows the desktop colours."
+msgstr "AMOLED використовує справжній чорний; Темна тема має сірий фон; Світла — темний текст на білому; Liquid Glass використовує напівпрозору поверхню; Системна тема відповідає кольорам робочого столу."

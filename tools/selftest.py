@@ -81,6 +81,7 @@ def start_island() -> None:
     environment = dict(os.environ)
     environment["XDG_CONFIG_HOME"] = CONFIG_HOME
     environment["DYNAMIC_ISLAND_DEBUG"] = "1"
+    environment["DYNAMIC_ISLAND_TRACE_MASKS"] = "1"
     environment["PYTHONUNBUFFERED"] = "1"
     environment["PYTHONPATH"] = os.path.join(ROOT, "src")
     with open(LOG, "w") as handle:
@@ -973,13 +974,18 @@ def test_application_rules() -> None:
             os.makedirs(applications)
             with open(os.path.join(applications, "org.example.demo.desktop"), "w") as handle:
                 handle.write(
-                    "[Desktop Entry]\\nType=Application\\nName=Demo App\\n"
-                    "Icon=demo\\nStartupWMClass=DemoWM\\n"
+                    "[Desktop Entry]\nType=Application\nName=Demo App\n"
+                    "Icon=demo\nStartupWMClass=DemoWM\n"
                 )
             with open(os.path.join(applications, "org.example.hidden.desktop"), "w") as handle:
-                handle.write("[Desktop Entry]\\nType=Application\\nName=Hidden\\nHidden=true\\n")
+                handle.write("[Desktop Entry]\nType=Application\nName=Hidden\nHidden=true\n")
             with open(os.path.join(applications, "org.example.link.desktop"), "w") as handle:
-                handle.write("[Desktop Entry]\\nType=Link\\nName=Web Link\\n")
+                handle.write("[Desktop Entry]\nType=Link\nName=Web Link\n")
+            with open(os.path.join(applications, "org.telegram.desktop.desktop"), "w") as handle:
+                handle.write(
+                    "[Desktop Entry]\nType=Application\nName=Telegram Desktop\n"
+                    "Icon=telegram\n"
+                )
 
             apps.DATA_DIRS = [temporary]
             apps._index = []
@@ -988,10 +994,18 @@ def test_application_rules() -> None:
             catalog = apps.catalog()
             check(
                 "application catalogue contains only visible launchable apps",
-                len(catalog) == 1
-                and catalog[0]["id"] == "org.example.demo"
-                and catalog[0]["name"] == "Demo App"
-                and catalog[0]["icon"] == "demo",
+                len(catalog) == 2
+                and any(
+                    app["id"] == "org.example.demo"
+                    and app["name"] == "Demo App"
+                    and app["icon"] == "demo"
+                    for app in catalog
+                )
+                and any(
+                    app["id"] == "org.telegram.desktop"
+                    and app["name"] == "Telegram Desktop"
+                    for app in catalog
+                ),
                 str(catalog),
             )
             check(
@@ -1000,9 +1014,49 @@ def test_application_rules() -> None:
                 and apps.application_id("", "Demo App") == "org.example.demo",
             )
             check(
+                "dotted Telegram desktop ID is not truncated as a filename suffix",
+                apps.application_id("org.telegram.desktop", "Telegram Desktop")
+                == "org.telegram.desktop"
+                and apps.desktop_file("org.telegram.desktop")
+                == os.path.join(applications, "org.telegram.desktop.desktop"),
+            )
+            check(
                 "unknown application IDs keep stable namespaced fallbacks",
                 apps.application_id("org.example.missing", "") == "desktop:org.example.missing"
                 and apps.application_id("", "Custom App") == "app:custom app",
+            )
+            probe = PolicyProbe()
+            probe._config = FakeConfig({
+                "applicationRules": {
+                    "org.telegram.desktop": {"sound": "off", "timeout": 2000}
+                }
+            })
+            telegram_key, telegram_rule = probe._application_rule(
+                "org.telegram.desktop", "Telegram Desktop"
+            )
+            check(
+                "Telegram resolves the exact per-app policy key",
+                telegram_key == "org.telegram.desktop" and telegram_rule.get("sound") == "off",
+                f"{telegram_key}: {telegram_rule}",
+            )
+            from dynamicisland.model import Notification
+            probe._duration_for = IslandController._duration_for.__get__(probe, PolicyProbe)
+            probe._config = FakeConfig({
+                "applicationRules": {
+                    "org.telegram.desktop": {"sound": "off", "timeout": 2000}
+                },
+                "criticalNeverExpires": True,
+                "defaultTimeout": 6000,
+                "lowUrgencyTimeout": 4000,
+            })
+            telegram_notification = Notification(
+                id=90, app_name="Telegram Desktop",
+                desktop_entry="org.telegram.desktop", timeout=10000,
+                urgency=URGENCY_NORMAL,
+            )
+            check(
+                "Telegram custom timeout overrides the sender timeout",
+                probe._duration_for(telegram_notification) == 2000,
             )
 
             probe = PolicyProbe()
@@ -1061,6 +1115,73 @@ def test_application_rules() -> None:
         apps.DATA_DIRS = previous_dirs
         apps._index = previous_index
         apps._index_stamp = previous_stamp
+
+
+
+
+def test_config_validation() -> None:
+    """Unsafe or malformed settings are bounded before QML consumes them."""
+    sys.path.insert(0, os.path.join(ROOT, "src"))
+    from dynamicisland.config import normalise_config
+
+    values = normalise_config({
+        "sideMargin": -500, "topMargin": 9000, "glowOpacity": 2.5,
+        "animationStyle": "teleport", "compactMinWidth": 700,
+        "compactMaxWidth": 100,
+        "applicationRules": {
+            "org.telegram.desktop": {"timeout": 90000, "sound": "off"},
+            "bad": {"notifications": "launch-command", "timeout": -20},
+        },
+        "futureOption": {"kept": True},
+    })
+    check("negative side margin is clamped", values["sideMargin"] == 0)
+    check("excessive top margin is clamped", values["topMargin"] == 500)
+    check("opacity stays within 0..1", values["glowOpacity"] == 1.0)
+    check("unknown animation style falls back safely", values["animationStyle"] == "slide")
+    check("dependent widths remain consistent", values["compactMaxWidth"] >= values["compactMinWidth"])
+    check(
+        "per-app timeout is bounded and invalid policy removed",
+        values["applicationRules"]["org.telegram.desktop"]["timeout"] == 60000
+        and "notifications" not in values["applicationRules"].get("bad", {}),
+    )
+    check("unknown future settings are preserved", values["futureOption"] == {"kept": True})
+
+
+def test_critical_stack_retention() -> None:
+    """Stack trimming closes old ordinary cards but never drops critical cards."""
+    sys.path.insert(0, os.path.join(ROOT, "src"))
+    from dynamicisland.controller import IslandController
+    from dynamicisland.model import Notification, NotificationModel, URGENCY_CRITICAL, URGENCY_NORMAL
+
+    class FakeConfig:
+        def get(self, key):
+            return {"stackDepth": 1}.get(key)
+
+    class TrimProbe:
+        _trim_stack = IslandController._trim_stack
+
+        def __init__(self):
+            self._model = NotificationModel()
+            self._config = FakeConfig()
+            self.closed = []
+
+        def _close(self, notification_id, reason):
+            self.closed.append(notification_id)
+            self._model.remove(notification_id)
+
+    probe = TrimProbe()
+    for item in (
+        Notification(id=1, urgency=URGENCY_CRITICAL),
+        Notification(id=2, urgency=URGENCY_NORMAL),
+        Notification(id=3, urgency=URGENCY_NORMAL),
+        Notification(id=4, urgency=URGENCY_CRITICAL),
+        Notification(id=5, urgency=URGENCY_NORMAL),
+    ):
+        probe._model.put(item)
+    probe._trim_stack()
+    remaining = probe._model.ids()
+    check("critical notifications survive stack trimming", 1 in remaining and 4 in remaining, str(remaining))
+    check("ordinary cards are trimmed to keep critical cards visible", {2, 3, 5}.issubset(set(probe.closed)), str(probe.closed))
 
 
 def test_telegram_filter() -> None:
@@ -1129,6 +1250,8 @@ def main() -> int:
         test_media_focus()
         test_telegram_filter()
         test_application_rules()
+        test_config_validation()
+        test_critical_stack_retention()
         test_history_link()
         test_hardened()
         print()
@@ -1168,6 +1291,8 @@ def main() -> int:
         test_media_focus()
         test_telegram_filter()
         test_application_rules()
+        test_config_validation()
+        test_critical_stack_retention()
         test_history_link()
         test_hardened()
         test_sound_hints()

@@ -702,9 +702,28 @@ class IslandController(QObject):
             self._service.emit_closed(notification_id, reason)
 
     def _trim_stack(self) -> None:
-        """Drop the oldest entries once the stack grows past what we render."""
+        """Trim ordinary cards until critical cards remain in the visible stack.
+
+        Critical cards are never expired just because newer notifications
+        arrived. When possible, old ordinary cards are removed from the back
+        until every retained critical card is within the rendered stack depth.
+        If critical cards alone exceed the configured depth, all are retained.
+        """
         limit = max(1, int(self._config.get("stackDepth")) + 1)
-        for notification_id in self._model.ids()[limit:]:
+        while len(self._model.ids()) > limit:
+            notification_id = next(
+                (
+                    candidate_id
+                    for candidate_id in reversed(self._model.ids())
+                    if (
+                        (candidate := self._model.get(candidate_id)) is not None
+                        and candidate.urgency != URGENCY_CRITICAL
+                    )
+                ),
+                None,
+            )
+            if notification_id is None:
+                break
             self._close(notification_id, CLOSED_EXPIRED)
 
     # -- filtering ------------------------------------------------------

@@ -499,3 +499,5 @@ msgstr ""
 msgid "Installed applications: %1"
 msgstr ""
 
+msgid "AMOLED is true black; Dark is a grey body; Light is dark type on white; Liquid Glass uses a translucent surface; System follows the desktop colours."
+msgstr ""
