@@ -940,6 +940,129 @@ def test_sound_hints() -> None:
     )
 
 
+def test_application_rules() -> None:
+    """Application discovery and per-app notification policy stay deterministic."""
+    import tempfile
+
+    sys.path.insert(0, os.path.join(ROOT, "src"))
+    from dynamicisland import apps
+    from dynamicisland.controller import IslandController
+    from dynamicisland.model import URGENCY_CRITICAL, URGENCY_NORMAL
+
+    previous_dirs = apps.DATA_DIRS
+    previous_index = apps._index
+    previous_stamp = apps._index_stamp
+
+    class FakeConfig:
+        def __init__(self, values):
+            self.values = values
+
+        def get(self, key):
+            return self.values.get(key)
+
+    class FakeService:
+        inhibited = False
+
+    class PolicyProbe:
+        _application_rule = IslandController._application_rule
+        _suppression_reason = IslandController._suppression_reason
+
+    try:
+        with tempfile.TemporaryDirectory() as temporary:
+            applications = os.path.join(temporary, "applications")
+            os.makedirs(applications)
+            with open(os.path.join(applications, "org.example.demo.desktop"), "w") as handle:
+                handle.write(
+                    "[Desktop Entry]\\nType=Application\\nName=Demo App\\n"
+                    "Icon=demo\\nStartupWMClass=DemoWM\\n"
+                )
+            with open(os.path.join(applications, "org.example.hidden.desktop"), "w") as handle:
+                handle.write("[Desktop Entry]\\nType=Application\\nName=Hidden\\nHidden=true\\n")
+            with open(os.path.join(applications, "org.example.link.desktop"), "w") as handle:
+                handle.write("[Desktop Entry]\\nType=Link\\nName=Web Link\\n")
+
+            apps.DATA_DIRS = [temporary]
+            apps._index = []
+            apps._index_stamp = ()
+
+            catalog = apps.catalog()
+            check(
+                "application catalogue contains only visible launchable apps",
+                len(catalog) == 1
+                and catalog[0]["id"] == "org.example.demo"
+                and catalog[0]["name"] == "Demo App"
+                and catalog[0]["icon"] == "demo",
+                str(catalog),
+            )
+            check(
+                "application ID resolves desktop ID and exact app name",
+                apps.application_id("org.example.demo", "") == "org.example.demo"
+                and apps.application_id("", "Demo App") == "org.example.demo",
+            )
+            check(
+                "unknown application IDs keep stable namespaced fallbacks",
+                apps.application_id("org.example.missing", "") == "desktop:org.example.missing"
+                and apps.application_id("", "Custom App") == "app:custom app",
+            )
+
+            probe = PolicyProbe()
+            probe._service = FakeService()
+            probe._config = FakeConfig({
+                "applicationRules": {"org.example.demo": {"notifications": "block"}},
+                "blacklist": [],
+                "doNotDisturb": False,
+            })
+            hints = {"desktop-entry": "org.example.demo"}
+            check(
+                "per-app Block suppresses normal notifications",
+                "blocked by application rule" in probe._suppression_reason(
+                    "Demo App", hints, URGENCY_NORMAL
+                ),
+            )
+            check(
+                "critical notifications pass even when app is blocked",
+                probe._suppression_reason("Demo App", hints, URGENCY_CRITICAL) == "",
+            )
+
+            probe._config.values["applicationRules"]["org.example.demo"]["notifications"] = "mute"
+            check(
+                "per-app Mute shows the notification without suppressing it",
+                probe._suppression_reason("Demo App", hints, URGENCY_NORMAL) == "",
+            )
+            probe._config.values["doNotDisturb"] = True
+            check(
+                "global DND suppresses inherited app notifications",
+                probe._suppression_reason("Demo App", hints, URGENCY_NORMAL) == "do not disturb is on",
+            )
+            probe._config.values["applicationRules"]["org.example.demo"]["notifications"] = "allow"
+            check(
+                "explicit per-app Allow overrides DND",
+                probe._suppression_reason("Demo App", hints, URGENCY_NORMAL) == "",
+            )
+            probe._config.values["doNotDisturb"] = False
+            probe._config.values["blacklist"] = ["org.example.demo"]
+            probe._config.values["applicationRules"]["org.example.demo"]["notifications"] = "inherit"
+            check(
+                "legacy blacklist remains active for inherited apps",
+                probe._suppression_reason("Demo App", hints, URGENCY_NORMAL)
+                == "the sender is on the blacklist",
+            )
+            probe._config.values["applicationRules"]["org.example.demo"]["notifications"] = "allow"
+            check(
+                "explicit per-app Allow overrides the legacy blacklist",
+                probe._suppression_reason("Demo App", hints, URGENCY_NORMAL) == "",
+            )
+            probe._service.inhibited = True
+            check(
+                "per-app Allow does not override D-Bus inhibition",
+                "inhibition" in probe._suppression_reason("Demo App", hints, URGENCY_NORMAL),
+            )
+    finally:
+        apps.DATA_DIRS = previous_dirs
+        apps._index = previous_index
+        apps._index_stamp = previous_stamp
+
+
 def test_telegram_filter() -> None:
     """The Telegram smart filter stays app-specific and preserves exceptions."""
     sys.path.insert(0, os.path.join(ROOT, "src"))
@@ -1005,6 +1128,7 @@ def main() -> int:
         test_file_operations()
         test_media_focus()
         test_telegram_filter()
+        test_application_rules()
         test_history_link()
         test_hardened()
         print()
@@ -1043,6 +1167,7 @@ def main() -> int:
         test_file_operations()
         test_media_focus()
         test_telegram_filter()
+        test_application_rules()
         test_history_link()
         test_hardened()
         test_sound_hints()
