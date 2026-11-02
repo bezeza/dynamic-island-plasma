@@ -144,6 +144,10 @@ QtObject {
     readonly property real springHeight: 4.0
     readonly property real dampingHeight: 0.88
     readonly property real morphMass: 1.25
+    // Elastic entry/exit makes Spring visually distinct from cubic Slide.
+    readonly property int springEntryDuration: 720
+    readonly property real springAmplitude: 1.0
+    readonly property real springPeriod: 0.42
 
     /* The shape renders first, the contents after it. A button that fades in
      * while the pill is still growing arrives before the notification it

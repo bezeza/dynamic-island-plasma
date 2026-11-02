@@ -13,7 +13,7 @@ import os
 from PySide6.QtCore import QObject, QRect, Slot
 from PySide6.QtGui import QGuiApplication, QRegion
 
-from . import DEBUG, debug
+from . import debug
 
 # Anything but Wayland means no layer shell, and the mask semantics differ.
 WAYLAND = (os.environ.get("XDG_SESSION_TYPE") or "").lower() == "wayland"
@@ -53,11 +53,15 @@ class WindowTools(QObject):
             return
         self._masked = rect
         self._window.setMask(QRegion(rect))
-        debug(
-            f"mask={rect.x()},{rect.y()} {rect.width()}x{rect.height()} "
-            f"window={self._window.width()}x{self._window.height()} "
-            f"dpr={self._window.devicePixelRatio()}"
-        )
+        # Geometry changes during animation can generate hundreds of masks.
+        # Keep ordinary debug logs readable; opt in only when diagnosing input
+        # region problems specifically.
+        if os.environ.get("DYNAMIC_ISLAND_TRACE_MASKS", "").lower() in ("1", "true", "yes", "on"):
+            debug(
+                f"mask={rect.x()},{rect.y()} {rect.width()}x{rect.height()} "
+                f"window={self._window.width()}x{self._window.height()} "
+                f"dpr={self._window.devicePixelRatio()}"
+            )
 
     @Slot(str)
     def log(self, message: str) -> None:

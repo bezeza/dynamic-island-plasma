@@ -151,29 +151,55 @@ def fold(text: str) -> str:
     )
 
 
-def application_id(desktop_entry: str = "", app_name: str = "") -> str:
-    """Return a stable policy key, preferring an exact desktop-entry ID."""
-    entry = str(desktop_entry or "").strip()
-    name = str(app_name or "").strip()
-    if entry.endswith(".desktop") and os.path.isabs(entry) and os.path.isfile(entry):
-        return os.path.basename(entry)[:-8]
-    candidate = entry.removesuffix(".desktop")
-    if candidate:
+def _desktop_entry_id(entry: str) -> str:
+    """Resolve a desktop-entry ID without stripping a valid dotted ID.
+
+    Notification hints normally contain the desktop-file ID without the final
+    filename suffix. For example, org.telegram.desktop maps to the file
+    org.telegram.desktop.desktop. A caller may also pass the full filename or
+    an absolute path, so both forms are accepted.
+    """
+    value = str(entry or "").strip()
+    if not value:
+        return ""
+    if value.endswith(".desktop") and os.path.isabs(value) and os.path.isfile(value):
+        return os.path.basename(value)[:-8]
+    candidates = [value]
+    if value.endswith(".desktop"):
+        candidates.append(value[:-8])
+    for candidate in candidates:
+        if not candidate:
+            continue
         for directory in DATA_DIRS:
             path = os.path.join(directory, "applications", candidate + ".desktop")
             if os.path.isfile(path):
                 return candidate
-    wanted = fold(candidate or name)
-    if wanted:
-        for record in index():
-            if fold(record.stem) == wanted or fold(record.name) == wanted:
-                return record.stem
-            if record.wmclass and fold(record.wmclass) == wanted:
-                return record.stem
+    return value
+
+
+def application_id(desktop_entry: str = "", app_name: str = "") -> str:
+    """Return a stable policy key, preferring an exact desktop-entry ID."""
+    entry = str(desktop_entry or "").strip()
+    name = str(app_name or "").strip()
+    candidate = _desktop_entry_id(entry)
     if candidate:
+        wanted = fold(candidate)
+        for record in index():
+            if record.stem == candidate or fold(record.stem) == wanted:
+                return record.stem
+            if fold(record.name) == wanted or (
+                record.wmclass and fold(record.wmclass) == wanted
+            ):
+                return record.stem
         return "desktop:" + candidate.casefold()
     if name:
-        return "app:" + name.casefold().strip()
+        wanted = fold(name)
+        for record in index():
+            if fold(record.name) == wanted or (
+                record.wmclass and fold(record.wmclass) == wanted
+            ):
+                return record.stem
+        return "app:" + name.casefold()
     return ""
 
 
@@ -225,15 +251,15 @@ def desktop_file(entry: str) -> str | None:
     if entry.endswith(".desktop") and os.path.isabs(entry) and os.path.exists(entry):
         return entry
 
-    entry = entry.removesuffix(".desktop")
+    entry_id = _desktop_entry_id(entry)
 
-    # An exact id is the only match worth trusting blindly.
+    # An exact desktop-entry ID is the only match worth trusting blindly.
     for directory in DATA_DIRS:
-        path = os.path.join(directory, "applications", entry + ".desktop")
-        if os.path.exists(path):
+        path = os.path.join(directory, "applications", entry_id + ".desktop")
+        if os.path.isfile(path):
             return path
 
-    folded = fold(entry)
+    folded = fold(entry_id)
     if not folded:
         return None
     # "org.mozilla.firefox" is as likely to be spelled "firefox".

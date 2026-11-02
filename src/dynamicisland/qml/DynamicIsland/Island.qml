@@ -69,7 +69,8 @@ Item {
      * out of the screen edge and leaves the same way — but only after it has
      * collapsed back into its capsule, which is what the pause below is for. */
     readonly property real edgeShift: -(compactHeight + Cfg.values.topMargin + 24)
-    property real entryShift: (Cfg.values.animationStyle === "slide" || Cfg.values.animationStyle === "spring")
+    readonly property string animationStyle: Cfg.values.animationStyle
+    property real entryShift: (animationStyle === "slide" || animationStyle === "spring")
                                ? (hasContent ? 0 : edgeShift) : 0
     transform: Translate { y: root.entryShift }
 
@@ -79,8 +80,13 @@ Item {
             // needs a moment to close first.
             PauseAnimation { duration: root.hasContent ? 0 : Theme.collapseDelay }
             NumberAnimation {
-                duration: Theme.leaveDuration
-                easing.type: root.hasContent ? Easing.OutCubic : Easing.InCubic
+                duration: root.animationStyle === "spring"
+                    ? Theme.springEntryDuration : Theme.leaveDuration
+                easing.type: root.animationStyle === "spring"
+                    ? (root.hasContent ? Easing.OutElastic : Easing.InElastic)
+                    : (root.hasContent ? Easing.OutCubic : Easing.InCubic)
+                easing.amplitude: Theme.springAmplitude
+                easing.period: Theme.springPeriod
             }
         }
     }

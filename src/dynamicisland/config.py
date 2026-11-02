@@ -146,6 +146,103 @@ DEFAULTS: dict[str, Any] = {
     "telegramDeduplicateSeconds": 30,
 }
 
+_INT_LIMITS: dict[str, tuple[int, int]] = {
+    "topMargin": (0, 500), "sideMargin": (0, 500),
+    "compactHeight": (24, 120), "compactMinWidth": (80, 600),
+    "compactMaxWidth": (100, 1000), "expandedWidth": (200, 1200),
+    "expandedRadius": (0, 120), "maxHeight": (120, 1200),
+    "defaultTimeout": (0, 120000), "lowUrgencyTimeout": (0, 120000),
+    "stackDepth": (0, 20), "dismissThreshold": (4, 200),
+    "historyLength": (0, 10000), "osdTimeout": (0, 60000),
+    "mediaTimeout": (0, 120000), "telegramDeduplicateSeconds": (1, 600),
+}
+_FLOAT_LIMITS: dict[str, tuple[float, float]] = {
+    "glowOpacity": (0.0, 1.0), "strokeOpacity": (0.0, 1.0),
+}
+_BOOL_KEYS = {
+    "criticalNeverExpires", "pauseOnHover", "accentFromIcon", "showJobs",
+    "showOsd", "showMedia", "mediaHideWhenFocused", "soundEnabled",
+    "doNotDisturb", "telegramSmartFilter", "telegramDeduplicate",
+}
+_ALLOWED_VALUES = {
+    "position": {"top-left", "top-center", "top-right"},
+    "animationStyle": {"slide", "fade", "zoom", "spring"},
+    "theme": {"amoled", "dark", "light", "system", "glass"},
+}
+
+
+def _bounded_number(value: Any, default: Any, lower: float, upper: float, integer: bool) -> Any:
+    import math
+
+    if isinstance(value, bool):
+        value = default
+    try:
+        number = float(value)
+    except (TypeError, ValueError, OverflowError):
+        number = float(default)
+    if not math.isfinite(number):
+        number = float(default)
+    number = min(upper, max(lower, number))
+    return int(number) if integer else number
+
+
+def normalise_config(values: dict[str, Any]) -> dict[str, Any]:
+    """Validate known settings while preserving forward-compatible unknown keys."""
+    result = dict(values)
+    for key, (lower, upper) in _INT_LIMITS.items():
+        result[key] = _bounded_number(result.get(key, DEFAULTS[key]), DEFAULTS[key], lower, upper, True)
+    for key, (lower, upper) in _FLOAT_LIMITS.items():
+        result[key] = _bounded_number(result.get(key, DEFAULTS[key]), DEFAULTS[key], lower, upper, False)
+    for key in _BOOL_KEYS:
+        if not isinstance(result.get(key), bool):
+            result[key] = DEFAULTS[key]
+    for key, allowed in _ALLOWED_VALUES.items():
+        if result.get(key) not in allowed:
+            result[key] = DEFAULTS[key]
+    result["compactMaxWidth"] = max(result["compactMinWidth"], result["compactMaxWidth"])
+    result["expandedWidth"] = max(result["compactMinWidth"], result["expandedWidth"])
+
+    for key in ("screen", "language", "fontFamily", "defaultSound"):
+        if not isinstance(result.get(key), str):
+            result[key] = DEFAULTS[key]
+    import re
+    accent = result.get("fallbackAccent")
+    if not isinstance(accent, str) or not re.fullmatch(r"#[0-9A-Fa-f]{6}", accent):
+        result["fallbackAccent"] = DEFAULTS["fallbackAccent"]
+
+    for key in ("blacklist", "telegramFilterKeywords", "telegramImportantKeywords"):
+        value = result.get(key)
+        if not isinstance(value, list):
+            result[key] = list(DEFAULTS[key])
+        else:
+            result[key] = [str(item) for item in value if isinstance(item, (str, int, float))]
+    if not isinstance(result.get("sources"), list):
+        result["sources"] = []
+    else:
+        result["sources"] = [item for item in result["sources"] if isinstance(item, dict)]
+
+    rules = result.get("applicationRules")
+    clean_rules: dict[str, dict[str, Any]] = {}
+    if isinstance(rules, dict):
+        for app_id, raw_rule in rules.items():
+            if not isinstance(app_id, str) or not isinstance(raw_rule, dict):
+                continue
+            rule = dict(raw_rule)
+            if rule.get("notifications") not in ("inherit", "allow", "mute", "block"):
+                rule.pop("notifications", None)
+            if rule.get("sound") not in ("inherit", "on", "off"):
+                rule.pop("sound", None)
+            if "timeout" in rule:
+                timeout = _bounded_number(rule["timeout"], 0, 0, 60000, True)
+                if timeout <= 0:
+                    rule.pop("timeout", None)
+                else:
+                    rule["timeout"] = max(1000, timeout)
+            if rule:
+                clean_rules[app_id] = rule
+    result["applicationRules"] = clean_rules
+    return result
+
 
 class Config(QObject):
     """Live configuration object, exposed to QML as ``Cfg``."""
@@ -195,7 +292,7 @@ class Config(QObject):
             with open(CONFIG_PATH, "r", encoding="utf-8") as fh:
                 stored = json.load(fh)
             if isinstance(stored, dict):
-                self._data.update(stored)
+                self._data = normalise_config({**DEFAULTS, **stored})
         except FileNotFoundError:
             pass
         except (OSError, ValueError) as exc:
@@ -237,9 +334,10 @@ class Config(QObject):
 
     @Slot(str, "QVariant")
     def set(self, key: str, value: Any) -> None:
-        if self._data.get(key) == value:
+        updated = normalise_config({**self._data, key: value})
+        if updated == self._data:
             return
-        self._data[key] = value
+        self._data = updated
         self.save()
         self.changed.emit()
 
@@ -250,14 +348,14 @@ class Config(QObject):
         edit the island's configuration, not the widget's, and the island is
         the one process that owns the file.
         """
+        updated = normalise_config({**self._data, **values})
         changes = {
-            key: value
-            for key, value in values.items()
+            key: value for key, value in updated.items()
             if self._data.get(key) != value
         }
         if not changes:
             return False
-        self._data.update(changes)
+        self._data = updated
         self.save()
         self.changed.emit()
         return True
