@@ -362,7 +362,7 @@ Treat that work as **experimental and unverified** until CI and manual Fedora KD
 
 When continuing this project:
 
-1. Read this file first, then read `CONTRIBUTING_AI.md` and `TASKS.md`, followed by the current README, open issues/PRs, and relevant source files.
+1. Read this file first, then read the current README, project instructions, open issues/PRs, and relevant source files.
 2. Inspect the current default branch and working branch heads. Never assume branch names or commit SHAs in this document are still current.
 3. Identify what is already implemented in code versus merely planned here.
 4. Do not ask the maintainer to repeat the product vision, target platform, language goals, or per-app control requirement; they are recorded above.
@@ -373,11 +373,6 @@ When continuing this project:
 9. Never claim that a PR is merged, tests pass, a package installs, or a feature works unless verified.
 10. In the final hand-off, list changed files, branch/PR, tests run, known limitations, and the next recommended task.
 
-## 12. Current coordination documents
+## 12. Immediate next task
 
-- `CONTRIBUTING_AI.md` — mandatory workflow and engineering rules for every human and AI contributor.
-- `TASKS.md` — task IDs, priorities, owners, dependencies, and the live PR dependency chain. Always verify it against GitHub before starting work.
-- `.github/pull_request_template.md` — required implementation and test hand-off.
-- `.github/ISSUE_TEMPLATE/` — feature and bug-report templates.
-
-The first per-application manager implementation is in draft PR #5. Do not recreate its existing application discovery, allow/mute/block, sound, timeout, or settings-page work. First review and validate that implementation, then continue with the remaining per-app presentation, priority, grouping, filters, bulk actions, and manual-entry requirements listed in `TASKS.md` and section 3.1 above.
+**Implement the per-application notification manager.** Start by tracing how incoming notifications identify their sender/application and how the current global blacklist is applied. Design a stable application identity model (desktop-entry ID plus sender/app-name fallback), define and test policy precedence, then add persistent per-app overrides and a searchable settings page. Keep the existing global blacklist working as a compatibility layer until migration is complete.

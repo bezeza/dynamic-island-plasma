@@ -685,6 +685,16 @@ tools/
 
 ---
 
+## Contributing (humans and AI agents)
+
+Before changing code, read:
+
+1. [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md) — product vision and roadmap.
+2. [CONTRIBUTING_AI.md](CONTRIBUTING_AI.md) — branch, review, testing and hand-off rules.
+3. [TASKS.md](TASKS.md) — task IDs, owners and dependencies.
+
+Use the GitHub issue templates for feature requests and bug reports. Every substantial change must have one owner, a dedicated branch and a Pull Request. Do not start overlapping work without checking open PRs first.
+
 ## Development
 
 ```bash

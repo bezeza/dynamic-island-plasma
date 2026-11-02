@@ -16,7 +16,7 @@ Do not ask the maintainer to repeat product requirements already documented here
 
 ## 2. Task ownership and coordination
 
-- Every non-trivial change must reference a task ID (for example, `DI-003`) or an issue number.
+- Every non-trivial change must reference a task ID (for example, `DI-003`) or an issue number. Task IDs are permanent and never reused; cancelled tasks remain in `TASKS.md` with status `Cancelled`.
 - Before starting, check whether another open PR or active branch already changes the same feature or files.
 - Claim the task in `TASKS.md` by adding contributor/agent name and a short status note. If you cannot safely update the shared task file, state your claim in the issue/PR and notify the maintainer.
 - One task should have one implementation owner at a time. Other agents may review or test, but must not independently implement the same scope.
@@ -31,7 +31,7 @@ Do not ask the maintainer to repeat product requirements already documented here
 - Never commit directly to `main`.
 - Never force-push shared branches, rewrite published history, delete branches, merge PRs, or change release/version numbers without explicit approval.
 - Keep PRs small and limited to the assigned task.
-- Link the task/issue in the PR title or body and explain dependencies on other PRs.
+- New PR titles must start with the permanent task ID in the form `[DI-###]`; commit subjects must start with `DI-###: `. Link related issues and explain dependencies in the PR body. Existing branches/PRs created before this convention are grandfathered: do not rename or rewrite them solely to retrofit IDs.
 - Mark PRs draft until implementation and required checks are ready for review.
 - Do not merge a stacked PR before its base/dependency PR is integrated or explicitly retargeted by the maintainer.
 

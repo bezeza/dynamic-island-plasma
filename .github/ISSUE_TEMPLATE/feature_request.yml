@@ -34,5 +34,5 @@ body:
     id: testing
     attributes:
       label: How should it be tested?
-      validations:
-        required: false
+    validations:
+      required: false
