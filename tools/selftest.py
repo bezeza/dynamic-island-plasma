@@ -81,6 +81,7 @@ def start_island() -> None:
     environment = dict(os.environ)
     environment["XDG_CONFIG_HOME"] = CONFIG_HOME
     environment["DYNAMIC_ISLAND_DEBUG"] = "1"
+    environment["DYNAMIC_ISLAND_TRACE_MASKS"] = "1"
     environment["PYTHONUNBUFFERED"] = "1"
     environment["PYTHONPATH"] = os.path.join(ROOT, "src")
     with open(LOG, "w") as handle:

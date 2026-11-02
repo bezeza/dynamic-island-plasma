@@ -226,7 +226,10 @@ msgid "just now"
 msgstr "щойно"
 
 msgid "%1 minute ago"
-msgstr "%1 хвилину тому"
+msgid_plural "%1 minutes ago"
+msgstr[0] "%1 хвилину тому"
+msgstr[1] "%1 хвилини тому"
+msgstr[2] "%1 хвилин тому"
 
 msgid "Icon:"
 msgstr "Піктограма:"
