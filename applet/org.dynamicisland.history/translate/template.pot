@@ -423,3 +423,79 @@ msgstr ""
 
 msgid "Liquid Glass"
 msgstr ""
+
+msgid "Applications"
+msgstr "Applications"
+
+msgid "Dynamic Island is not running. Start it with: systemctl --user start dynamic-island"
+msgstr "Dynamic Island is not running. Start it with: systemctl --user start dynamic-island"
+
+msgid "Choose an application to set its notification, sound and display rules. Unchanged settings inherit the global defaults."
+msgstr "Choose an application to set its notification, sound and display rules. Unchanged settings inherit the global defaults."
+
+msgid "Search applications…"
+msgstr "Search applications…"
+
+msgid "No applications found"
+msgstr "No applications found"
+
+msgid "Refresh application list"
+msgstr "Refresh application list"
+
+msgid "Select an application from the list."
+msgstr "Select an application from the list."
+
+msgid "No desktop applications were found. Check that desktop entries are installed."
+msgstr "No desktop applications were found. Check that desktop entries are installed."
+
+msgid "Notifications"
+msgstr "Notifications"
+
+msgid "Notification policy:"
+msgstr "Notification policy:"
+
+msgid "Use global setting"
+msgstr "Use global setting"
+
+msgid "Always allow"
+msgstr "Always allow"
+
+msgid "Show silently"
+msgstr "Show silently"
+
+msgid "Block notifications"
+msgstr "Block notifications"
+
+msgid "Critical notifications always pass through for safety. An explicit Allow can override Do Not Disturb and the legacy blacklist."
+msgstr "Critical notifications always pass through for safety. An explicit Allow can override Do Not Disturb and the legacy blacklist."
+
+msgid "Sound"
+msgstr "Sound"
+
+msgid "Notification sound:"
+msgstr "Notification sound:"
+
+msgid "On"
+msgstr "On"
+
+msgid "Off"
+msgstr "Off"
+
+msgid "Display duration"
+msgstr "Display duration"
+
+msgid "Use a custom duration for this application"
+msgstr "Use a custom duration for this application"
+
+msgid "Reset to global defaults"
+msgstr "Reset to global defaults"
+
+msgid "Reset application settings?"
+msgstr "Reset application settings?"
+
+msgid "All custom rules for this application will be removed."
+msgstr "All custom rules for this application will be removed."
+
+msgid "Installed applications: %1"
+msgstr "Installed applications: %1"
+

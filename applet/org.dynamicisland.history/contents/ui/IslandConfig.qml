@@ -23,6 +23,7 @@ Item {
 
     /// The whole file, or {} while it is being read — or if it is not there.
     property var values: ({})
+    property var applications: []
 
     /// False until the first read came back; the controls stay quiet until then.
     property bool ready: false
@@ -45,6 +46,11 @@ Item {
 
     readonly property string readCommand: "cat " + bridge.quoted(bridge.path)
 
+    readonly property string applicationsCommand:
+        "gdbus call --session --dest org.freedesktop.Notifications"
+        + " --object-path /org/freedesktop/Notifications"
+        + " --method org.dynamicisland.Island.GetApplications"
+
     function quoted(text) {
         return "'" + String(text).replace(/'/g, "'\\''") + "'"
     }
@@ -56,6 +62,17 @@ Item {
 
         onNewData: (source, data) => {
             disconnectSource(source)
+            if (source === bridge.applicationsCommand) {
+                try {
+                    const output = String(data["stdout"] || "").trim()
+                    const encoded = output.startsWith("('") ? output.slice(2, -3) : ""
+                    const parsed = JSON.parse(decodeURIComponent(encoded || "[]"))
+                    bridge.applications = Array.isArray(parsed) ? parsed : []
+                } catch (error) {
+                    bridge.applications = []
+                }
+                return
+            }
             if (source === bridge.probeCommand) {
                 // Any answer at all means somebody is serving our interface.
                 bridge.running = (data["exit code"] || 0) === 0
@@ -79,6 +96,8 @@ Item {
         io.connectSource(bridge.readCommand)
         io.disconnectSource(bridge.probeCommand)
         io.connectSource(bridge.probeCommand)
+        io.disconnectSource(bridge.applicationsCommand)
+        io.connectSource(bridge.applicationsCommand)
     }
 
     Component.onCompleted: load()
@@ -101,6 +120,17 @@ Item {
     function value(key, fallback) {
         const stored = bridge.values[key]
         return stored === undefined ? fallback : stored
+    }
+
+    function refreshApplications() {
+        bridge.applications = []
+        io.disconnectSource(bridge.applicationsCommand)
+        io.connectSource(bridge.applicationsCommand)
+    }
+
+    function applicationRules() {
+        const rules = bridge.values.applicationRules
+        return rules && typeof rules === "object" ? rules : ({})
     }
 
     function sources() {

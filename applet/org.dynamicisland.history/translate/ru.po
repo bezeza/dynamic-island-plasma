@@ -409,3 +409,79 @@ msgstr "Сверху справа"
 
 msgid "Liquid Glass"
 msgstr "Жидкое стекло"
+
+msgid "Applications"
+msgstr "Приложения"
+
+msgid "Dynamic Island is not running. Start it with: systemctl --user start dynamic-island"
+msgstr "Dynamic Island не запущен. Запустите: systemctl --user start dynamic-island"
+
+msgid "Choose an application to set its notification, sound and display rules. Unchanged settings inherit the global defaults."
+msgstr "Выберите приложение, чтобы настроить его уведомления, звук и отображение. Неизменённые параметры наследуют глобальные настройки."
+
+msgid "Search applications…"
+msgstr "Поиск приложений…"
+
+msgid "No applications found"
+msgstr "Приложения не найдены"
+
+msgid "Refresh application list"
+msgstr "Обновить список приложений"
+
+msgid "Select an application from the list."
+msgstr "Выберите приложение из списка."
+
+msgid "No desktop applications were found. Check that desktop entries are installed."
+msgstr "Приложения рабочего стола не найдены. Проверьте установку desktop-файлов."
+
+msgid "Notifications"
+msgstr "Уведомления"
+
+msgid "Notification policy:"
+msgstr "Правила уведомлений:"
+
+msgid "Use global setting"
+msgstr "Использовать глобальную настройку"
+
+msgid "Always allow"
+msgstr "Всегда разрешать"
+
+msgid "Show silently"
+msgstr "Показывать без звука"
+
+msgid "Block notifications"
+msgstr "Блокировать уведомления"
+
+msgid "Critical notifications always pass through for safety. An explicit Allow can override Do Not Disturb and the legacy blacklist."
+msgstr "Критические уведомления всегда проходят ради безопасности. Явное разрешение может обходить режим «Не беспокоить» и старый чёрный список."
+
+msgid "Sound"
+msgstr "Звук"
+
+msgid "Notification sound:"
+msgstr "Звук уведомлений:"
+
+msgid "On"
+msgstr "Включён"
+
+msgid "Off"
+msgstr "Выключен"
+
+msgid "Display duration"
+msgstr "Длительность отображения"
+
+msgid "Use a custom duration for this application"
+msgstr "Задать отдельную длительность для этого приложения"
+
+msgid "Reset to global defaults"
+msgstr "Сбросить к глобальным настройкам"
+
+msgid "Reset application settings?"
+msgstr "Сбросить настройки приложения?"
+
+msgid "All custom rules for this application will be removed."
+msgstr "Все индивидуальные правила этого приложения будут удалены."
+
+msgid "Installed applications: %1"
+msgstr "Установлено приложений: %1"
+

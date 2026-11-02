@@ -24,6 +24,12 @@ ConfigModel {
     }
 
     ConfigCategory {
+        name: i18n("Applications")
+        icon: "applications-all"
+        source: "ConfigApplications.qml"
+    }
+
+    ConfigCategory {
         name: i18n("Sources")
         icon: "internet-news-reader"
         source: "ConfigSources.qml"

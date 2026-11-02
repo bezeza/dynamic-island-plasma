@@ -151,6 +151,67 @@ def fold(text: str) -> str:
     )
 
 
+def application_id(desktop_entry: str = "", app_name: str = "") -> str:
+    """Return a stable policy key, preferring an exact desktop-entry ID."""
+    entry = str(desktop_entry or "").strip()
+    name = str(app_name or "").strip()
+    if entry.endswith(".desktop") and os.path.isabs(entry) and os.path.isfile(entry):
+        return os.path.basename(entry)[:-8]
+    candidate = entry.removesuffix(".desktop")
+    if candidate:
+        for directory in DATA_DIRS:
+            path = os.path.join(directory, "applications", candidate + ".desktop")
+            if os.path.isfile(path):
+                return candidate
+    wanted = fold(candidate or name)
+    if wanted:
+        for record in index():
+            if fold(record.stem) == wanted or fold(record.name) == wanted:
+                return record.stem
+            if record.wmclass and fold(record.wmclass) == wanted:
+                return record.stem
+    if candidate:
+        return "desktop:" + candidate.casefold()
+    if name:
+        return "app:" + wanted
+    return ""
+
+
+def catalog() -> list[dict[str, str]]:
+    """Installed, user-visible desktop applications for the settings UI."""
+    result: list[dict[str, str]] = []
+    for record in index():
+        name = ""
+        icon = ""
+        hidden = False
+        try:
+            with open(record.path, "r", encoding="utf-8", errors="replace") as handle:
+                in_entry = False
+                for raw in handle:
+                    line = raw.strip()
+                    if line.startswith("["):
+                        if in_entry:
+                            break
+                        in_entry = line == "[Desktop Entry]"
+                        continue
+                    if not in_entry or "=" not in line:
+                        continue
+                    key, value = line.split("=", 1)
+                    if key == "Name" and not name:
+                        name = value.strip()
+                    elif key == "Icon" and not icon:
+                        icon = value.strip()
+                    elif key in ("NoDisplay", "Hidden") and value.strip().lower() == "true":
+                        hidden = True
+        except OSError:
+            continue
+        if hidden:
+            continue
+        result.append({"id": record.stem, "name": name or record.name or record.stem,
+                       "icon": icon or "application-x-executable"})
+    result.sort(key=lambda item: (item["name"].casefold(), item["id"].casefold()))
+    return result
+
 def desktop_file(entry: str) -> str | None:
     """The desktop file for a desktop entry, an app name, or a path."""
     entry = str(entry or "").strip()

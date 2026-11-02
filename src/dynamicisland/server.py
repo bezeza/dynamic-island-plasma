@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import sys
 import traceback
+from urllib.parse import quote
 from typing import Any
 
 import dbus
@@ -185,6 +186,18 @@ class _Adaptor(dbus.service.Object):
             )
 
     @dbus.service.method(ISLAND_INTERFACE, in_signature="", out_signature="s")
+    def GetApplications(self) -> str:
+        """Installed desktop applications, URL-encoded JSON for the applet UI."""
+        if self._service.applications_handler is None:
+            return ""
+        try:
+            payload = json.dumps(self._service.applications_handler(), ensure_ascii=False)
+            return quote(payload, safe="")
+        except Exception as error:  # noqa: BLE001
+            print(f"[dynamic-island] cannot list applications: {error}")
+            return ""
+
+    @dbus.service.method(ISLAND_INTERFACE, in_signature="", out_signature="s")
     def GetConfig(self) -> str:
         """The whole configuration as JSON — the applet's settings read it."""
         if self._service.config_handler is None:
@@ -285,6 +298,8 @@ class NotificationService(QObject):
     set_config_handler = None
     #: Called with the active window's three names whenever the focus moves
     activated_handler = None
+    #: Called by the applet to list installed desktop applications.
+    applications_handler = None
 
     def __init__(self, parent: QObject | None = None, claim: bool = True) -> None:
         super().__init__(parent)

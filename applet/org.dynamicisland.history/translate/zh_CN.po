@@ -376,3 +376,79 @@ msgstr "保护关键词："
 
 msgid "Protected keywords bypass Telegram keyword filtering and duplicate merging. Critical notifications always pass; global Do Not Disturb and the application blacklist still apply."
 msgstr "受保护的关键词可绕过 Telegram 关键词过滤和重复合并。紧急通知始终显示；全局免打扰和应用黑名单仍然生效。"
+
+msgid "Applications"
+msgstr ""
+
+msgid "Dynamic Island is not running. Start it with: systemctl --user start dynamic-island"
+msgstr ""
+
+msgid "Choose an application to set its notification, sound and display rules. Unchanged settings inherit the global defaults."
+msgstr ""
+
+msgid "Search applications…"
+msgstr ""
+
+msgid "No applications found"
+msgstr ""
+
+msgid "Refresh application list"
+msgstr ""
+
+msgid "Select an application from the list."
+msgstr ""
+
+msgid "No desktop applications were found. Check that desktop entries are installed."
+msgstr ""
+
+msgid "Notifications"
+msgstr ""
+
+msgid "Notification policy:"
+msgstr ""
+
+msgid "Use global setting"
+msgstr ""
+
+msgid "Always allow"
+msgstr ""
+
+msgid "Show silently"
+msgstr ""
+
+msgid "Block notifications"
+msgstr ""
+
+msgid "Critical notifications always pass through for safety. An explicit Allow can override Do Not Disturb and the legacy blacklist."
+msgstr ""
+
+msgid "Sound"
+msgstr ""
+
+msgid "Notification sound:"
+msgstr ""
+
+msgid "On"
+msgstr ""
+
+msgid "Off"
+msgstr ""
+
+msgid "Display duration"
+msgstr ""
+
+msgid "Use a custom duration for this application"
+msgstr ""
+
+msgid "Reset to global defaults"
+msgstr ""
+
+msgid "Reset application settings?"
+msgstr ""
+
+msgid "All custom rules for this application will be removed."
+msgstr ""
+
+msgid "Installed applications: %1"
+msgstr ""
+
